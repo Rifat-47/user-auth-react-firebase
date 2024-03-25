@@ -1,0 +1,9 @@
+.home_button {
+    cursor: pointer;
+    background-color: aquamarine;
+    border: none;
+    margin: 5px;
+    padding: 7px;
+    border-radius: 7px;
+    font-weight: bold;
+}

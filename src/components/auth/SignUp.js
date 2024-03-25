@@ -1,26 +1,38 @@
 import React, { useState } from 'react'
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [msg, setMsg] = useState('');
+    const navigate = useNavigate();
 
-    // const auth = getAuth();
-    const signUpHandler = (e) => {
+    const signUpHandler = async (e) => {
         e.preventDefault();
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                console.log(userCredential);
-            })
-            .then(() => {
+        if (email.length > 0 && password.length > 0) {
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                console.log(userCredential.user.email);
                 setEmail('');
                 setPassword('');
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+                setMsg('You have successfully signed up!');
+                setTimeout(() => navigate('/auth'), 2000);
+            } catch (error) {
+                if (error.message === 'Firebase: Error (auth/email-already-in-use).') {
+                    setMsg('Email already in use');
+                } else if (error.message === 'Firebase: Error (auth/network-request-failed).') {
+                    setMsg('Network request failed');
+                } else {
+                    setMsg(error.message);
+                }
+            }
+        } else {
+            setMsg('Please fill in all fields');
+        }
     };
+    
 
     return (
         <div>
@@ -40,6 +52,9 @@ const SignUp = () => {
                 ></input>
                 <button type='submit'>Sign Up</button>
             </form>
+            <div>
+                {msg}
+            </div>
         </div>
     )
 }
