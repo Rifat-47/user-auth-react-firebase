@@ -3,7 +3,6 @@ import classes from "./Home.module.css";
 import { Link } from "react-router-dom";
 
 function Home() {
-
   return (
     <div>
       <h2>Home</h2>

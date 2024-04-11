@@ -11,7 +11,7 @@ const AuthDetails = () => {
         signOut(auth)
             .then(() => {
                 console.log('signed out');
-                navigate('/signin');
+                navigate('/');
             })
             .catch((error) => {
                 console.log(error.message);
@@ -26,6 +26,7 @@ const AuthDetails = () => {
                 // console.log(user);
             } else {
                 setAuthUser(null);
+                navigate('/');
             }
         });
 
